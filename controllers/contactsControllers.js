@@ -1,11 +1,35 @@
-import contactsService from "../services/contactsServices.js";
+import {listContacts, addContact, getContactById, removeContact} from "../services/contactsServices.js";
+import HttpError from "../helpers/HttpError.js";
 
-export const getAllContacts = (req, res) => {};
+export const getAllContacts = (req, res) => {
+    const contacts = listContacts();
+    res.json({status: 200,
+        message: "Contacts list get successfully",
+        data: contacts});
+};
 
-export const getOneContact = (req, res) => {};
+export const getOneContact = (req, res) => {
+    const contact = getContactById(parseInt(req.params.id, 10));
+    if (contact === null) {
+        throw HttpError(400, "No contacts found.");
+    }
 
-export const deleteContact = (req, res) => {};
+    res.json({status: 200,
+        message: `Contact  with id ${contact.id} get successfully `,
+        data: contact});
+};
 
-export const createContact = (req, res) => {};
+export const deleteContact = (req, res) => {
+    const contact = removeContact(parseInt(req.params.id, 10));
+    if (contact === null) {
+        throw HttpError(400, "No contacts found.");
+    }
 
-export const updateContact = (req, res) => {};
+    res.status(204).end();
+};
+
+export const createContact = (req, res) => {
+};
+
+export const updateContact = (req, res) => {
+};
