@@ -29,7 +29,12 @@ export const deleteContact = (req, res) => {
 };
 
 export const createContact = (req, res) => {
+    const contact = addContact(req.body);
+
+    res.json({status: 200, message: `Contact with id ${contact.id} created successfully`, data: contact});
 };
 
 export const updateContact = (req, res) => {
+    const contact = addContact(req.body);
+    //TODO: Дописати реалізацію помилок, створити updateContact в services
 };
