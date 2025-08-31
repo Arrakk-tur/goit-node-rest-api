@@ -12,7 +12,7 @@ import {createContactSchema, updateContactSchema} from "../schemas/contactsSchem
 const contactsRouter = express.Router();
 const jsonParser = express.json();
 
-contactsRouter.get("/", getAllContacts);
+contactsRouter.get("/", jsonParser, getAllContacts);
 
 contactsRouter.get("/:id", getOneContact);
 
