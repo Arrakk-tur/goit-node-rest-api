@@ -45,11 +45,10 @@ export async function changeContact(contactId, payload) {
     const contacts = await listContacts();
     const index = contacts.findIndex(item => item.id === contactId);
     if (index === -1) return null;
-    const updatedContact = {...payload};
 
-    contacts.push(updatedContact);
+    const updatedContact = { ...contacts[index], ...payload, id: contactId };
+
+    contacts[index] = updatedContact;
     await updateContacts(contacts);
     return updatedContact;
 }
-
-//TODO: Перевірити що контакт змінюється, а не додається
