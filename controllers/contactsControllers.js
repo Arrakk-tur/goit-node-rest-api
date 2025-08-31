@@ -1,11 +1,61 @@
-import contactsService from "../services/contactsServices.js";
+import {addContact, changeContact, getContactById, listContacts, removeContact,} from "../services/contactsServices.js";
+import HttpError from "../helpers/HttpError.js";
 
-export const getAllContacts = (req, res) => {};
+export const getAllContacts = async (req, res, next) => {
+    const contacts = await listContacts();
+    res.json({
+        status: 200,
+        message: "Contacts list get successfully",
+        data: contacts
+    });
+};
 
-export const getOneContact = (req, res) => {};
+export const getOneContact = async (req, res, next) => {
+    const contact = await getContactById(req.params.id);
+    if (contact === null) {
+        return next(HttpError(404, "Not found"));
+    }
 
-export const deleteContact = (req, res) => {};
+    res.json({
+        status: 200,
+        message: `Contact  with id ${contact.id} get successfully `,
+        data: contact
+    });
+};
 
-export const createContact = (req, res) => {};
+export const deleteContact = async (req, res, next) => {
+    const contact = await removeContact(req.params.id);
+    if (contact === null) {
+        return next(HttpError(404, "Not found"));
+    }
 
-export const updateContact = (req, res) => {};
+    res.status(200).end();
+};
+
+export const createContact = async (req, res, next) => {
+    const contact = await addContact(req.body);
+
+    res.status(201).json({
+        status: 201,
+        message: `Contact with id ${contact.id} created successfully`,
+        data: contact
+    });
+};
+
+export const updateContact = async (req, res, next) => {
+    const id = req.params.id;
+    const payload = req.body;
+    const contact = await changeContact(id, payload);
+    if (contact === null) {
+        return next(HttpError(404, "Not found"));
+    }
+    if (Object.keys(req.body).length === 0) {
+        return next(HttpError(400, "Body must have at least one field"));
+    }
+
+    res.json({
+        status: 200,
+        message: `Contact with id ${id} changed successfully`,
+        data: contact
+    });
+};
