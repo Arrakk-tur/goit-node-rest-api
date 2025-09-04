@@ -1,4 +1,11 @@
-import {addContact, changeContact, getContactById, listContacts, removeContact,} from "../services/contactsServices.js";
+import {
+    addContact,
+    changeContact,
+    getContactById,
+    listContacts,
+    removeContact,
+    updateStatusContact,
+} from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
 
 export const getAllContacts = async (req, res, next) => {
@@ -56,6 +63,21 @@ export const updateContact = async (req, res, next) => {
     res.json({
         status: 200,
         message: `Contact with id ${id} changed successfully`,
+        data: contact
+    });
+};
+
+export const updateFavorite = async (req, res, next) => {
+    const id = req.params.id;
+    const payload = req.body;
+    const contact = await updateStatusContact(id, payload);
+    if (contact === null) {
+        return next(HttpError(404, "Not found"));
+    }
+
+    res.json({
+        status: 200,
+        message: `Status for contact with id ${id} changed successfully`,
         data: contact
     });
 };
