@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import Users from "../db/users.js";
 
 import HttpError from "../helpers/HttpError.js";
-import { createToken } from "../helpers/jwt.js";
+// import { createToken } from "../helpers/jwt.js";
 
 export const findUser = query => Users.findOne({
     where: query
