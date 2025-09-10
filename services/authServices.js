@@ -1,9 +1,8 @@
 import bcrypt from "bcrypt";
-// TODO: перевірити згідно умов
 import Users from "../db/users.js";
 
 import HttpError from "../helpers/HttpError.js";
-// import { createToken } from "../helpers/jwt.js";
+import { createToken } from "../helpers/jwt.js";
 
 export const findUser = query => Users.findOne({
     where: query
@@ -35,9 +34,4 @@ export const loginUser = async payload => {
     await user.update({token});
 
     return token;
-}
-
-export const logoutUser = async user => {
-    await user.update({token: null});
-    return user;
 }

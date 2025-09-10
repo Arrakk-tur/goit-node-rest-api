@@ -26,17 +26,10 @@ const getCurrentController = async(req, res)=> {
     })
 }
 
-const logoutController = async(req, res)=> {
-    await authServices.logoutUser(req.user);
-
-    res.json({
-        message: "Logout successfully"
-    })
-}
 
 export default {
     registerController,
     loginController,
     getCurrentController,
-    logoutController,
+    // logoutController,
 }
