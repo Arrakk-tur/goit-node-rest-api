@@ -17,19 +17,19 @@ const loginController = async(req, res)=> {
     })
 }
 
-const getCurrentController = async(req, res)=> {
-    const {email, username} = req.user;
+
+
+const logoutController = async(req, res)=> {
+    await authServices.logoutUser(req.user);
 
     res.json({
-        email,
-        username,
+        message: "Logout successfully"
     })
 }
-
 
 export default {
     registerController,
     loginController,
-    getCurrentController,
-    // logoutController,
+    // getCurrentController,
+    logoutController,
 }

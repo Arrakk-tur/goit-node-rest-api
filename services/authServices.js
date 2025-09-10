@@ -35,3 +35,8 @@ export const loginUser = async payload => {
 
     return token;
 }
+
+export const logoutUser = async user => {
+    await user.update({token: null});
+    return user;
+}
