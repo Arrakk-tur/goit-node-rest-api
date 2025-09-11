@@ -6,10 +6,10 @@ import authenticate from "../middlewares/authenticate.js";
 
 
 const authRouter = express.Router();
-// const jsonParser = express.json();
 
 authRouter.post("/register", validateBody(registerUserSchema), authControllers.registerController);
 authRouter.post("/login", validateBody(loginUserSchema), authControllers.loginController);
+authRouter.get("/current", authenticate, authControllers.getCurrentController);
 authRouter.post("/logout", authenticate, authControllers.logoutController);
 
 export default authRouter;

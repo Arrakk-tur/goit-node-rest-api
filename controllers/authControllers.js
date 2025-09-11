@@ -17,7 +17,14 @@ const loginController = async(req, res)=> {
     })
 }
 
+const getCurrentController = async(req, res)=> {
+    const {email, username} = req.user;
 
+    res.json({
+        email,
+        username,
+    })
+}
 
 const logoutController = async(req, res)=> {
     await authServices.logoutUser(req.user);
@@ -30,6 +37,6 @@ const logoutController = async(req, res)=> {
 export default {
     registerController,
     loginController,
-    // getCurrentController,
+    getCurrentController,
     logoutController,
 }
