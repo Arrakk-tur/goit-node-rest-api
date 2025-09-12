@@ -7,7 +7,7 @@ const authenticate = async (req, res, next) => {
     // const {authorization} = req.headers;
     const authorization = req.get("Authorization");
     if (!authorization) {
-        throw HttpError(401, "Authorization header missing");
+        throw HttpError(401, "Not authorized");
     }
     const [bearer, token] = authorization.split(" ");
     if (bearer !== "Bearer") {
@@ -21,8 +21,13 @@ const authenticate = async (req, res, next) => {
 
     const user = await findUser({ id: payload.id });
     if (!user) {
-        throw HttpError(401, "User not found");
+        throw HttpError(401, "Not authorized");
     }
+
+    if (user.token !== token) {
+        throw HttpError(401, "Not authorized");
+    }
+
     req.user = user;
     next();
 };

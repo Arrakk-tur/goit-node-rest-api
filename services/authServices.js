@@ -9,6 +9,10 @@ export const findUser = query => Users.findOne({
 })
 
 export const registerUser = async payload => {
+    if (await findUser({ email: payload.email })) {
+        throw HttpError(409, "Email in use")
+    }
+
     const hashPassword = await bcrypt.hash(payload.password, 10);
     return Users.create({...payload, password: hashPassword});
 }
@@ -18,16 +22,16 @@ export const loginUser = async payload => {
     const user = await findUser({email});
 
     if(!user) {
-        throw HttpError(401, "Email or password invalid");
+        throw HttpError(401, "Email or password is wrong");
     }
 
     const passwordCompare = await bcrypt.compare(password, user.password);
     if(!passwordCompare) {
-        throw HttpError(401, "Email or password invalid");
+        throw HttpError(401, "Email or password is wrong");
     }
 
     const tokenPayload = {
-        id: user.id,
+        email: user.email,
     }
 
     const token = createToken(tokenPayload);
