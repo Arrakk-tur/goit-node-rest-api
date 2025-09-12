@@ -31,13 +31,14 @@ export const loginUser = async payload => {
     }
 
     const tokenPayload = {
-        email: user.email,
+        id: user.id,
+        email: user.email
     }
 
     const token = createToken(tokenPayload);
     await user.update({token});
 
-    return token;
+    return { token, email: user.email, subscription: user.subscription }
 }
 
 export const logoutUser = async user => {

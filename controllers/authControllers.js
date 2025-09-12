@@ -4,22 +4,20 @@ const registerController = async(req, res)=> {
     const {email, subscription} = await authServices.registerUser(req.body);
 
     res.status(201).json({
-        email,
-        subscription,
+        user: {
+            email,
+            subscription,
+        }
     });
 }
 
 const loginController = async(req, res)=> {
-    const {token} = await authServices.loginUser(req.body);
-    const {email, subscription} = req.user;
+    const { token, email, subscription } = await authServices.loginUser(req.body);
 
     res.json({
         token,
-        "user": {
-            email,
-            subscription
-        }
-    })
+        user: { email, subscription }
+    });
 }
 
 const getCurrentController = async(req, res)=> {
@@ -34,7 +32,7 @@ const getCurrentController = async(req, res)=> {
 const logoutController = async(req, res)=> {
     await authServices.logoutUser(req.user);
 
-    res.status(204)
+    res.status(204).end();
 }
 
 export default {
