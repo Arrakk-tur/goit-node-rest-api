@@ -1,4 +1,5 @@
 import * as authServices from "../services/authServices.js";
+import ctrlWrapper from "../helpers/ctrlWrapper.js";
 
 const registerController = async(req, res)=> {
     const {email, subscription} = await authServices.registerUser(req.body);
@@ -36,8 +37,8 @@ const logoutController = async(req, res)=> {
 }
 
 export default {
-    registerController,
-    loginController,
-    getCurrentController,
-    logoutController,
-}
+    registerController: ctrlWrapper(registerController),
+    loginController: ctrlWrapper(loginController),
+    getCurrentController: ctrlWrapper(getCurrentController),
+    logoutController: ctrlWrapper(logoutController),
+};

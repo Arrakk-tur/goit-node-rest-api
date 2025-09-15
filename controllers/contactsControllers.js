@@ -40,7 +40,8 @@ export const deleteContact = async (req, res, next) => {
 };
 
 export const createContact = async (req, res, next) => {
-    const contact = await addContact(req.body);
+    const { id: owner } = req.user;
+    const contact = await addContact({...req.body, owner});
 
     res.status(201).json({
         status: 201,
