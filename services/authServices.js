@@ -3,18 +3,21 @@ import Users from "../db/users.js";
 
 import HttpError from "../helpers/HttpError.js";
 import { createToken } from "../helpers/jwt.js";
+import {createAvatar} from "../helpers/genAvatar.js";
 
 export const findUser = query => Users.findOne({
     where: query
 })
 
 export const registerUser = async payload => {
-    if (await findUser({ email: payload.email })) {
+    const email = payload.email
+    if (await findUser({ email: email })) {
         throw HttpError(409, "Email in use")
     }
 
     const hashPassword = await bcrypt.hash(payload.password, 10);
-    return Users.create({...payload, password: hashPassword});
+    const newAvatar = createAvatar(email);
+    return Users.create({...payload, password: hashPassword, avatarURL: newAvatar});
 }
 
 export const loginUser = async payload => {

@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import {DataTypes} from "sequelize";
 import sequelize from "./sequelize.js";
 
 const Users = sequelize.define("Users", {
@@ -19,7 +19,8 @@ const Users = sequelize.define("Users", {
     token: {
         type: DataTypes.STRING,
         defaultValue: null,
-    }
+    },
+    avatarURL: DataTypes.STRING
 })
 
 // await Users.sync({alter: true});
