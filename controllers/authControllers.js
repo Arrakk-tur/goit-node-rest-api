@@ -27,7 +27,7 @@ const getCurrentController = async(req, res)=> {
     res.json({
         email,
         subscription,
-    })
+    });
 }
 
 const logoutController = async(req, res)=> {
@@ -36,9 +36,19 @@ const logoutController = async(req, res)=> {
     res.status(204).end();
 }
 
+const updateAvatarsController = async(req, res)=> {
+    const avatarUrl = await authServices.changeAvatar(req.user, req.file);
+
+    res.status(200).json({
+        "avatarURL": avatarUrl
+    });
+
+}
+
 export default {
     registerController: ctrlWrapper(registerController),
     loginController: ctrlWrapper(loginController),
     getCurrentController: ctrlWrapper(getCurrentController),
     logoutController: ctrlWrapper(logoutController),
+    updateAvatarsController: ctrlWrapper(updateAvatarsController)
 };

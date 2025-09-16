@@ -1,9 +1,14 @@
+import fs from "node:fs/promises";
+import path from "node:path";
 import bcrypt from "bcrypt";
 import Users from "../db/users.js";
 
 import HttpError from "../helpers/HttpError.js";
 import { createToken } from "../helpers/jwt.js";
-import {createAvatar} from "../helpers/genAvatar.js";
+import { createAvatar } from "../helpers/genAvatar.js";
+import { nanoid } from "nanoid";
+
+const avatarsDir = path.resolve("public", "avatars");
 
 export const findUser = query => Users.findOne({
     where: query
@@ -47,4 +52,20 @@ export const loginUser = async payload => {
 export const logoutUser = async user => {
     await user.update({token: null});
     return user;
+}
+
+export const changeAvatar = async (user, file) => {
+    let avatar = null;
+    const ext = path.extname(file.filename);
+    const avatarNewName = `${nanoid()}${ext}`;
+
+    if(file) {
+        const newPath = path.join(avatarsDir, avatarNewName);
+        await fs.rename(file.path, newPath);
+        avatar = path.join("avatars", file.filename);
+    }
+
+    user.avatarURL = avatar;
+
+    return avatar;
 }
