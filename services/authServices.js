@@ -62,10 +62,10 @@ export const changeAvatar = async (user, file) => {
     if(file) {
         const newPath = path.join(avatarsDir, avatarNewName);
         await fs.rename(file.path, newPath);
-        avatar = path.join("avatars", file.filename);
+        avatar = path.join("avatars", avatarNewName);
     }
 
-    user.avatarURL = avatar;
+    await user.update({ avatarURL: avatar });
 
     return avatar;
 }
