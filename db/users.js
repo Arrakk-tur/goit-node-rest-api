@@ -23,6 +23,6 @@ const Users = sequelize.define("Users", {
     avatarURL: DataTypes.STRING
 })
 
-// await Users.sync({alter: true});
+await Users.sync({alter: true});
 
 export default Users;
