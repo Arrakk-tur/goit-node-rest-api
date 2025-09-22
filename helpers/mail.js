@@ -21,16 +21,16 @@ const recipients = [
     "test@mail.com",
 ];
 
-// transport
-//     .sendMail({
-//         from: sender,
-//         to: recipients,
-//         subject: "You are awesome!",
-//         text: "Congrats for sending test email with Mailtrap!",
-//         category: "Integration Test",
-//         sandbox: true
-//     })
-//     .then(console.log, console.error);
+transport
+    .sendMail({
+        from: sender,
+        to: recipients,
+        subject: "You are awesome!",
+        text: "Congrats for sending test email with Mailtrap!",
+        category: "Integration Test",
+        sandbox: true
+    })
+    .then(console.log, console.error);
 
 const sendEmail = payload => {
     const email = {...payload, from: sender.address};
