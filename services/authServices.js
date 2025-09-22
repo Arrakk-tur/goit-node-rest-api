@@ -108,3 +108,11 @@ export const verifyUser = async verificationToken => {
     });
     return user;
 }
+
+export const resendVerifyUser = async ({email})=> {
+    const user = await findUser({email});
+    if(user.verify) throw HttpError(400, "Verification has already been passed");
+
+    const verifyEmail = createVerifyEmail({verificationCode: user.verificationCode, email});
+    await sendEmail(verifyEmail);
+}

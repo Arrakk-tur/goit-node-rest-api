@@ -52,11 +52,20 @@ const verificationController = async (req, res)=> {
     });
 }
 
+const resendVerifyController = async(req, res)=> {
+    await authServices.resendVerifyUser(req.body);
+
+    res.status(200).json({
+        message: "Verification email sent"
+    })
+}
+
 export default {
     registerController: ctrlWrapper(registerController),
     loginController: ctrlWrapper(loginController),
     getCurrentController: ctrlWrapper(getCurrentController),
     logoutController: ctrlWrapper(logoutController),
     updateAvatarsController: ctrlWrapper(updateAvatarsController),
-    verificationController: ctrlWrapper(verificationController)
+    verificationController: ctrlWrapper(verificationController),
+    resendVerifyController: ctrlWrapper(resendVerifyController)
 };

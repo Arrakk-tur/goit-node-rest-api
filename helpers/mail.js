@@ -38,6 +38,3 @@ const sendEmail = payload => {
 }
 
 export default sendEmail;
-
-
-// TODO: Закінчити
