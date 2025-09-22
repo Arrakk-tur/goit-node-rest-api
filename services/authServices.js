@@ -69,3 +69,17 @@ export const changeAvatar = async (user, file) => {
 
     return avatar;
 }
+
+export const verifyUser = async verificationToken => {
+    const user = await findUser({ verificationToken: verificationToken });
+
+    if(!user) {
+        throw HttpError(404, "User not found");
+    }
+
+        await user.update({
+        verificationToken: null,
+        verify: true
+    });
+    return user;
+}

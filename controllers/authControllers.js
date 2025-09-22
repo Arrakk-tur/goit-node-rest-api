@@ -42,7 +42,14 @@ const updateAvatarsController = async(req, res)=> {
     res.status(200).json({
         "avatarURL": avatarUrl
     });
+}
 
+const verificationController = async (req, res)=> {
+    await authServices.verifyUser(req.param.verificationToken);
+
+    res.status(200).json({
+        message: 'Verification successful'
+    });
 }
 
 export default {
@@ -50,5 +57,6 @@ export default {
     loginController: ctrlWrapper(loginController),
     getCurrentController: ctrlWrapper(getCurrentController),
     logoutController: ctrlWrapper(logoutController),
-    updateAvatarsController: ctrlWrapper(updateAvatarsController)
+    updateAvatarsController: ctrlWrapper(updateAvatarsController),
+    verificationController: ctrlWrapper(verificationController)
 };
