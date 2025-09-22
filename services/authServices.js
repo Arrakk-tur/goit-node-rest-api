@@ -7,12 +7,22 @@ import HttpError from "../helpers/HttpError.js";
 import { createToken } from "../helpers/jwt.js";
 import { createAvatar } from "../helpers/genAvatar.js";
 import { nanoid } from "nanoid";
+import sendEmail from "../helpers/mail.js";
+
+const {BASE_URL} = process.env;
 
 const avatarsDir = path.resolve("public", "avatars");
 
 export const findUser = query => Users.findOne({
     where: query
 })
+
+const createVerifyEmail = ({verificationCode, email})=> ({
+    to: email,
+    subject: "Verify email",
+    html: `<a href="${BASE_URL}/api/auth/verify/${verificationCode}" target="_blank">Click verify email</a>`
+});
+
 
 export const registerUser = async payload => {
     const email = payload.email
@@ -21,8 +31,19 @@ export const registerUser = async payload => {
     }
 
     const hashPassword = await bcrypt.hash(payload.password, 10);
+    const verificationCode = nanoid();
     const newAvatar = createAvatar(email);
-    return Users.create({...payload, password: hashPassword, avatarURL: newAvatar});
+
+    const newUser = await Users.create({
+        ...payload,
+        password: hashPassword,
+        avatarURL: newAvatar,
+        verificationCode: verificationCode});
+
+    const verifyEmail = createVerifyEmail({verificationCode, email: payload.email});
+
+    await sendEmail(verifyEmail);
+    return newUser
 }
 
 export const loginUser = async payload => {
