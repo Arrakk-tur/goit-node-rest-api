@@ -8,4 +8,6 @@ DATABASE_PASSWORD=password
 DATABASE_HOST=host
 DATABASE_PORT=5432
 JWT_SECRET=jwt_secret
+EMAIL_USER=email_user
+EMAIL_PSWD=email_password
 ```
