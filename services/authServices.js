@@ -9,7 +9,7 @@ import { createAvatar } from "../helpers/genAvatar.js";
 import { nanoid } from "nanoid";
 import sendEmail from "../helpers/mail.js";
 
-const {BASE_URL} = process.env;
+const {BASE_URL, PORT} = process.env;
 
 const avatarsDir = path.resolve("public", "avatars");
 
@@ -17,10 +17,10 @@ export const findUser = query => Users.findOne({
     where: query
 })
 
-const createVerifyEmail = ({verificationCode, email})=> ({
+const createVerifyEmail = ({verificationToken, email})=> ({
     to: email,
     subject: "Verify email",
-    html: `<a href="${BASE_URL}/api/auth/verify/${verificationCode}" target="_blank">Click verify email</a>`
+    html: `<a href="${BASE_URL}:${PORT}/api/auth/verify/${verificationToken}" target="_blank">Click verify email</a>`
 });
 
 
@@ -38,9 +38,9 @@ export const registerUser = async payload => {
         ...payload,
         password: hashPassword,
         avatarURL: newAvatar,
-        verificationToken: verificationToken});
+        verificationToken});
 
-    const verifyEmail = createVerifyEmail({verificationToken, email: payload.email});
+    const verifyEmail = createVerifyEmail({verificationToken, email});
 
     await sendEmail(verifyEmail);
     return newUser
@@ -113,6 +113,11 @@ export const resendVerifyUser = async ({email})=> {
     const user = await findUser({email});
     if(user.verify) throw HttpError(400, "Verification has already been passed");
 
-    const verifyEmail = createVerifyEmail({verificationToken: user.verificationToken, email});
+    const verificationToken = nanoid();
+
+    await user.update({
+        verificationToken: verificationToken,
+    });
+    const verifyEmail = createVerifyEmail({verificationToken: verificationToken, email});
     await sendEmail(verifyEmail);
 }

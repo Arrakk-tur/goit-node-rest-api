@@ -34,7 +34,7 @@ transport
 
 const sendEmail = payload => {
     const email = {...payload, from: sender.address};
-    return transport.sendMail(email);
+    return transport.sendMail(email).then(console.log, console.error);
 }
 
 export default sendEmail;
