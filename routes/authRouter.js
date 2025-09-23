@@ -13,7 +13,7 @@ authRouter.post("/login", validateBody(loginUserSchema), authControllers.loginCo
 authRouter.get("/current", authenticate, authControllers.getCurrentController);
 authRouter.post("/logout", authenticate, authControllers.logoutController);
 authRouter.patch("/avatars", authenticate, upload.single("avatar"), authControllers.updateAvatarsController);
-authRouter.get("/verify/:verificationToken", authenticate, authControllers.verificationController);
+authRouter.get("/verify/:verificationToken", authControllers.verificationController);
 authRouter.post("/verify", validateBody(verifySchema), authControllers.resendVerifyController);
 
 

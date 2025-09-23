@@ -31,16 +31,16 @@ export const registerUser = async payload => {
     }
 
     const hashPassword = await bcrypt.hash(payload.password, 10);
-    const verificationCode = nanoid();
+    const verificationToken = nanoid();
     const newAvatar = createAvatar(email);
 
     const newUser = await Users.create({
         ...payload,
         password: hashPassword,
         avatarURL: newAvatar,
-        verificationCode: verificationCode});
+        verificationToken: verificationToken});
 
-    const verifyEmail = createVerifyEmail({verificationCode, email: payload.email});
+    const verifyEmail = createVerifyEmail({verificationToken, email: payload.email});
 
     await sendEmail(verifyEmail);
     return newUser
@@ -113,6 +113,6 @@ export const resendVerifyUser = async ({email})=> {
     const user = await findUser({email});
     if(user.verify) throw HttpError(400, "Verification has already been passed");
 
-    const verifyEmail = createVerifyEmail({verificationCode: user.verificationCode, email});
+    const verifyEmail = createVerifyEmail({verificationToken: user.verificationToken, email});
     await sendEmail(verifyEmail);
 }

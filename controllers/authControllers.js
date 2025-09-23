@@ -45,7 +45,8 @@ const updateAvatarsController = async(req, res)=> {
 }
 
 const verificationController = async (req, res)=> {
-    await authServices.verifyUser(req.param.verificationToken);
+    const { verificationToken } = req.params;
+    await authServices.verifyUser(verificationToken);
 
     res.status(200).json({
         message: 'Verification successful'
