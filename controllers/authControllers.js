@@ -42,7 +42,23 @@ const updateAvatarsController = async(req, res)=> {
     res.status(200).json({
         "avatarURL": avatarUrl
     });
+}
 
+const verificationController = async (req, res)=> {
+    const { verificationToken } = req.params;
+    await authServices.verifyUser(verificationToken);
+
+    res.status(200).json({
+        message: 'Verification successful'
+    });
+}
+
+const resendVerifyController = async(req, res)=> {
+    await authServices.resendVerifyUser(req.body);
+
+    res.status(200).json({
+        message: "Verification email sent"
+    })
 }
 
 export default {
@@ -50,5 +66,7 @@ export default {
     loginController: ctrlWrapper(loginController),
     getCurrentController: ctrlWrapper(getCurrentController),
     logoutController: ctrlWrapper(logoutController),
-    updateAvatarsController: ctrlWrapper(updateAvatarsController)
+    updateAvatarsController: ctrlWrapper(updateAvatarsController),
+    verificationController: ctrlWrapper(verificationController),
+    resendVerifyController: ctrlWrapper(resendVerifyController)
 };

@@ -20,7 +20,14 @@ const Users = sequelize.define("Users", {
         type: DataTypes.STRING,
         defaultValue: null,
     },
-    avatarURL: DataTypes.STRING
+    avatarURL: DataTypes.STRING,
+    verify: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    verificationToken: {
+        type: DataTypes.STRING,
+    },
 })
 
 await Users.sync({alter: true});

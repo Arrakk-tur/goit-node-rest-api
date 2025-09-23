@@ -22,6 +22,8 @@ app.use("/api/contacts", contactsRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(3000, () => {
+const port = Number(process.env.PORT) || 3000;
+
+app.listen(port, () => {
   console.log("Server is running. Use our API on port: 3000");
 });
